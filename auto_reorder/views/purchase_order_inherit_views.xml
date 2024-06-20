@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="purchase_order_form_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group" position="inside">
+                <field name="is_approval_required" invisible="1"/>
+            </xpath>
+            <xpath expr="//button[@name='print_quotation']" position="after">
+                <button name="approve_po" string="Approve PO" type="object" class="oe_highlight"
+                        groups="auto_reorder.group_auto_reorder_approval"
+                        attrs="{'invisible': ['|',('is_approval_required','=',False),('state','=','purchase')]}"/>
+            </xpath>
+            <xpath expr="//button[@name='button_confirm'][1]" position="replace">
+                <button name="button_confirm" type="object" string="Confirm Order" class="oe_highlight"
+                        id="bid_confirm" data-hotkey="v"
+                        attrs="{'invisible': ['|',('is_approval_required','=',True),('state','!=','sent')]}"/>
+            </xpath>
+            <xpath expr="//button[@name='button_confirm'][2]" position="replace">
+                <button name="button_confirm" type="object" string="Confirm Order" id="draft_confirm"
+                        attrs="{'invisible': ['|',('is_approval_required','=',True),('state','!=','draft')]}"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
